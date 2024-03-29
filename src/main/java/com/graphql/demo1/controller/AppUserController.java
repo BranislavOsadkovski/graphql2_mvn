@@ -20,13 +20,7 @@ public class AppUserController {
     private Logger logger = LogManager.getLogger("AppUserController");
     @Autowired
     private AppUserService appUserService;
-
-    @PostMapping
-    public AppUser createUser(@RequestBody AppUser appUser) {
-        logger.info("Creating user");
-        return appUserService.createAppUser(appUser);
-    }
-
+ 
     @MutationMapping(name = "createUser")
     public AppUser createUser(@Argument CreateUserInput createUserInput) {
         logger.info("Creating user");
