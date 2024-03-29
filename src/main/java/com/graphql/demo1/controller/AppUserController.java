@@ -44,10 +44,11 @@ public class AppUserController {
         logger.info("fetching all users");
         return appUserService.getAllAppUsers();
     }
+
     @MutationMapping(name = "updateUser")
-    public AppUser updateUser(@Argument(name = "updateUserInput") UpdateUserInput updateUserInput) {
+    public AppUser updateUser(@Argument Long id, @Argument(name = "updateUserInput") UpdateUserInput updateUserInput) {
         logger.info("Updating user");
-        return appUserService.updateUser(new AppUser(updateUserInput.userId(),updateUserInput.name(),updateUserInput.email()) );
+        return appUserService.updateUser(new AppUser(id, updateUserInput.name(), updateUserInput.email()));
     }
 
     @MutationMapping(name = "deleteUser")
