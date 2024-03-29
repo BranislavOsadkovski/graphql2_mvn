@@ -20,9 +20,9 @@ public class AppUserController {
     private Logger logger = LogManager.getLogger("AppUserController");
     @Autowired
     private AppUserService appUserService;
- 
+
     @MutationMapping(name = "createUser")
-    public AppUser createUser(@Argument CreateUserInput createUserInput) {
+    public AppUser createUser(@Argument(name = "input") CreateUserInput createUserInput) {
         logger.info("Creating user");
         return appUserService.createAppUser(new AppUser(null, createUserInput.name(), createUserInput.email()));
     }
@@ -40,7 +40,7 @@ public class AppUserController {
     }
 
     @MutationMapping(name = "updateUser")
-    public AppUser updateUser(@Argument Long id, @Argument(name = "updateUserInput") UpdateUserInput updateUserInput) {
+    public AppUser updateUser(@Argument Long id, @Argument(name = "input") UpdateUserInput updateUserInput) {
         logger.info("Updating user");
         return appUserService.updateUser(new AppUser(id, updateUserInput.name(), updateUserInput.email()));
     }
