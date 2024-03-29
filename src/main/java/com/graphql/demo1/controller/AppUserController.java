@@ -1,7 +1,7 @@
 package com.graphql.demo1.controller;
 
 import com.graphql.demo1.dto.CreateUserInput;
-import com.graphql.demo1.dto.UpdateUserDTO;
+import com.graphql.demo1.dto.UpdateUserInput;
 import com.graphql.demo1.model.AppUser;
 import com.graphql.demo1.service.AppUserService;
 import org.apache.logging.log4j.LogManager;
@@ -30,7 +30,7 @@ public class AppUserController {
     @MutationMapping(name = "createUser")
     public AppUser createUser(@Argument CreateUserInput createUserInput) {
         logger.info("Creating user");
-        return appUserService.createAppUser(new AppUser(null, createUserInput.getName(), createUserInput.getEmail()));
+        return appUserService.createAppUser(new AppUser(null, createUserInput.name(), createUserInput.email()));
     }
 
     @QueryMapping(name = "user")
@@ -45,9 +45,9 @@ public class AppUserController {
         return appUserService.getAllAppUsers();
     }
     @MutationMapping(name = "updateUser")
-    public AppUser updateUser(@Argument(name = "updateUserInput") UpdateUserDTO updateUserDTO) {
+    public AppUser updateUser(@Argument(name = "updateUserInput") UpdateUserInput updateUserInput) {
         logger.info("Updating user");
-        return appUserService.updateUser(updateUserDTO.getUserId(), updateUserDTO.getAppUser());
+        return appUserService.updateUser(new AppUser(updateUserInput.userId(),updateUserInput.name(),updateUserInput.email()) );
     }
 
     @MutationMapping(name = "deleteUser")

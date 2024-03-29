@@ -50,9 +50,8 @@ public class AppUserService {
      * @param appUser
      * @return appUser
      */
-    public AppUser updateUser(Long userId,AppUser appUser) {
+    public AppUser updateUser(AppUser appUser) {
         logger.info("Updating user values for user with userId: " + appUser.getId());
-        appUser.setId(userId);
         return appUserRepository.save(appUser);
     }
 
