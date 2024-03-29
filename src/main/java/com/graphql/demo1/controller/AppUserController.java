@@ -1,5 +1,6 @@
 package com.graphql.demo1.controller;
 
+import com.graphql.demo1.dto.CreateUserInput;
 import com.graphql.demo1.dto.UpdateUserDTO;
 import com.graphql.demo1.model.AppUser;
 import com.graphql.demo1.service.AppUserService;
@@ -7,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,30 +22,36 @@ public class AppUserController {
     private AppUserService appUserService;
 
     @PostMapping
-    public AppUser createUser(@RequestBody AppUser appUser){
+    public AppUser createUser(@RequestBody AppUser appUser) {
         logger.info("Creating user");
         return appUserService.createAppUser(appUser);
     }
 
+    @MutationMapping(name = "createUser")
+    public AppUser createUser(@Argument CreateUserInput createUserInput) {
+        logger.info("Creating user");
+        return appUserService.createAppUser(new AppUser(null, createUserInput.getName(), createUserInput.getEmail()));
+    }
+
     @QueryMapping(name = "user")
-    public AppUser getUser(@Argument Long id){
+    public AppUser getUser(@Argument Long id) {
         logger.info("Fetching user");
         return appUserService.getAppUser(id);
     }
 
     @QueryMapping(name = "users")
-    public List<AppUser> getAllUsers(){
+    public List<AppUser> getAllUsers() {
         logger.info("fetching all users");
         return appUserService.getAllAppUsers();
     }
-
-    public AppUser updateUser(UpdateUserDTO updateUserDTO){
+    @MutationMapping(name = "updateUser")
+    public AppUser updateUser(@Argument(name = "updateUserInput") UpdateUserDTO updateUserDTO) {
         logger.info("Updating user");
-        return appUserService.updateUser(updateUserDTO.getUserId(),updateUserDTO.getAppUser());
+        return appUserService.updateUser(updateUserDTO.getUserId(), updateUserDTO.getAppUser());
     }
 
-    @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId){
+    @MutationMapping(name = "deleteUser")
+    public void deleteUser(@Argument Long userId) {
         logger.info("deleting user");
         appUserService.deleteUser(userId);
     }
